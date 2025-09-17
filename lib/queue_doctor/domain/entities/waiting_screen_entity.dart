@@ -1,8 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-// --- ИСПРАВЛЕНИЕ: Удалено дублирующее определение класса и лишние импорты. ---
-// Теперь здесь находится только одно, корректное определение сущности.
-
 class DoctorQueueTicketEntity extends Equatable {
   final String ticketNumber;
   final String status; // 'на_приеме', 'зарегистрирован'

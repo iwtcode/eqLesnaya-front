@@ -245,9 +245,6 @@ class _WaitingScreenPageState extends State<WaitingScreenPage> {
             ],
           ),
           child: Center(
-            // --- ИЗМЕНЕНИЕ НАЧАЛО: Добавлена логика для разного отображения талонов ---
-            // Если талон в очереди (isWaiting = true), показываем только номер.
-            // Если талон вызван (isWaiting = false), показываем "Номер -> Кабинет".
             child: isWaiting
                 ? Text(
                     ticket.ticketNumber,
@@ -275,7 +272,7 @@ class _WaitingScreenPageState extends State<WaitingScreenPage> {
                         size: fontSize,
                       ),
                       Text(
-                        '${ticket.cabinetNumber ?? '?'}', // Добавлена проверка на null
+                        '${ticket.cabinetNumber ?? '?'}',
                         style: TextStyle(
                           color: textColor,
                           fontWeight: FontWeight.bold,
@@ -284,7 +281,6 @@ class _WaitingScreenPageState extends State<WaitingScreenPage> {
                       ),
                     ],
                   ),
-            // --- ИЗМЕНЕНИЕ КОНЕЦ ---
           ),
         ),
       ),

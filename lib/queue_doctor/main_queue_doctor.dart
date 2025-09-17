@@ -8,9 +8,6 @@ import 'domain/usecases/get_waiting_screen_data.dart';
 import 'presentation/blocs/waiting_screen_bloc.dart';
 import 'presentation/pages/waiting_screen_page.dart';
 
-// --- ИСПРАВЛЕНИЕ: Файл был полностью восстановлен до корректного состояния ---
-// Убрана вся старая логика маршрутизации, страница выбора кабинета и синтаксические ошибки.
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");

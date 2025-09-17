@@ -17,8 +17,6 @@ class WaitingScreenRepositoryImpl implements WaitingScreenRepository {
 
   @override
   Future<List<int>> getActiveCabinets() {
-    // --- ИСПРАВЛЕНИЕ: Вызов метода getActiveCabinets теперь корректен, ---
-    // --- так как метод был возвращен в интерфейс DataSource.
     return remoteDataSource.getActiveCabinets();
   }
 }

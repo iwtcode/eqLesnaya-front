@@ -25,7 +25,6 @@ class WaitingScreenBloc extends Bloc<WaitingScreenEvent, WaitingScreenState> {
   ) async {
     emit(WaitingScreenLoading());
 
-    // --- ИСПРАВЛЕНИЕ: Тип данных в emit.forEach теперь корректный ---
     await emit.forEach<List<DoctorQueueTicketEntity>>(
       _getWaitingScreenData(const GetWaitingScreenDataParams()),
       onData: (tickets) {

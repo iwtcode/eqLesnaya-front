@@ -3,7 +3,6 @@ import '../../core/usecases/usecase.dart';
 import '../entities/waiting_screen_entity.dart';
 import '../repositories/waiting_screen_repository.dart';
 
-// --- ИСПРАВЛЕНИЕ: UseCase теперь работает со списком талонов ---
 class GetWaitingScreenData
     implements
         UseCase<List<DoctorQueueTicketEntity>, GetWaitingScreenDataParams> {

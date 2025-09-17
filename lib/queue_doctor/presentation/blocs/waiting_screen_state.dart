@@ -1,9 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/waiting_screen_entity.dart';
 
-// --- ИЗМЕНЕНИЕ: Класс DoctorQueueLoaded теперь использует корректный тип List<DoctorQueueTicketEntity> ---
-// --- Это исправляет ошибки, связанные с неправильным определением типа. ---
-
 abstract class WaitingScreenState extends Equatable {
   const WaitingScreenState();
 
