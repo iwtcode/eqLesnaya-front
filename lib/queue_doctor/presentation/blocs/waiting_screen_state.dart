@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/waiting_screen_entity.dart';
 
+// --- ИЗМЕНЕНИЕ: Класс DoctorQueueLoaded теперь использует корректный тип List<DoctorQueueTicketEntity> ---
+// --- Это исправляет ошибки, связанные с неправильным определением типа. ---
+
 abstract class WaitingScreenState extends Equatable {
   const WaitingScreenState();
 
@@ -12,42 +15,15 @@ class WaitingScreenInitial extends WaitingScreenState {}
 
 class WaitingScreenLoading extends WaitingScreenState {}
 
-// Состояние для выбора кабинета
-class CabinetSelection extends WaitingScreenState {
-  final List<int> allCabinets;
-  final List<int> filteredCabinets;
-
-  const CabinetSelection({
-    required this.allCabinets,
-    required this.filteredCabinets,
-  });
-
-  @override
-  List<Object> get props => [allCabinets, filteredCabinets];
-
-  CabinetSelection copyWith({
-    List<int>? allCabinets,
-    List<int>? filteredCabinets,
-  }) {
-    return CabinetSelection(
-      allCabinets: allCabinets ?? this.allCabinets,
-      filteredCabinets: filteredCabinets ?? this.filteredCabinets,
-    );
-  }
-}
-
-// Состояние, когда данные об очереди загружены
 class DoctorQueueLoaded extends WaitingScreenState {
-  final DoctorQueueEntity queueEntity;
+  final List<DoctorQueueTicketEntity> tickets;
 
-  const DoctorQueueLoaded({required this.queueEntity});
+  const DoctorQueueLoaded({required this.tickets});
 
   @override
-  List<Object> get props => [queueEntity];
+  List<Object> get props => [tickets];
 }
 
-
-// Состояние ошибки
 class WaitingScreenError extends WaitingScreenState {
   final String message;
 
