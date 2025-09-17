@@ -9,11 +9,10 @@ class WaitingScreenRepositoryImpl implements WaitingScreenRepository {
   WaitingScreenRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Stream<DoctorQueueEntity> getWaitingScreenData(
-      GetWaitingScreenDataParams params) {
-    // DataSource возвращает модель, которая является подтипом сущности,
-    // поэтому прямое возвращение допустимо.
-    return remoteDataSource.getWaitingScreenData(params.cabinetNumber);
+  Stream<List<DoctorQueueTicketEntity>> getWaitingScreenData(
+    GetWaitingScreenDataParams params,
+  ) {
+    return remoteDataSource.getQueueUpdates();
   }
 
   @override
