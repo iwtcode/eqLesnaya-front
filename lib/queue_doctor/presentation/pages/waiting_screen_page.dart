@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:elqueue/queue_reception/presentation/blocs/ad_display_bloc.dart';
+import 'package:elqueue/queue_reception/presentation/widgets/ad_content_player.dart';
 import '../../domain/entities/waiting_screen_entity.dart';
 import '../blocs/waiting_screen_bloc.dart';
 import '../blocs/waiting_screen_event.dart';
@@ -50,41 +52,71 @@ class _WaitingScreenPageState extends State<WaitingScreenPage> {
             final waitingTickets = state.tickets
                 .where((t) => t.status == 'зарегистрирован')
                 .toList();
-
+            
+            // --- ИЗМЕНЕНИЕ НАЧАЛО: Верстка разделяется на очередь и рекламу ---
             return Column(
               children: [
                 _buildNewHeader(),
-                _buildQueueStatusHeader(),
                 Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: _buildTicketDisplayArea(
-                          tickets: waitingTickets,
-                          isWaiting: true,
-                        ),
-                      ),
-                      Container(width: 1, color: const Color(0xFFE0E0E0)),
-                      Expanded(
-                        flex: 1,
-                        child: _buildTicketDisplayArea(
-                          tickets: inProgressTickets,
-                          isWaiting: false,
-                        ),
-                      ),
-                    ],
+                  child: BlocBuilder<AdDisplayBloc, AdDisplayState>(
+                    builder: (context, adState) {
+                      final bool showAds = adState.ads.isNotEmpty;
+                      return Row(
+                        children: [
+                          // Основной контент с очередями
+                          Expanded(
+                            child: Column(
+                              children: [
+                                _buildQueueStatusHeader(),
+                                Expanded(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: _buildTicketDisplayArea(
+                                          tickets: waitingTickets,
+                                          isWaiting: true,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 1,
+                                        color: const Color(0xFFE0E0E0),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: _buildTicketDisplayArea(
+                                          tickets: inProgressTickets,
+                                          isWaiting: false,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Рекламный блок (если есть реклама)
+                          if (showAds)
+                            AspectRatio(
+                              aspectRatio: 3 / 4,
+                              child: _buildAdArea(adState),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
             );
+            // --- ИЗМЕНЕНИЕ КОНЕЦ ---
           }
 
+          // Состояние загрузки (без изменений)
           return Column(
             children: [
               _buildNewHeader(),
-              _buildQueueStatusHeader(),
+               _buildQueueStatusHeader(),
               const Expanded(
                 child: Center(
                   child: CircularProgressIndicator(
@@ -96,6 +128,45 @@ class _WaitingScreenPageState extends State<WaitingScreenPage> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildAdArea(AdDisplayState state) {
+    if (state.ads.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final currentAd = state.ads[state.currentIndex];
+    final borderRadius = BorderRadius.circular(12.0);
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(38, 0, 0, 0),
+              blurRadius: 10.0,
+              spreadRadius: 2.0,
+              offset: Offset.zero,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: borderRadius,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 700),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: AdContentPlayer(
+              key: ValueKey<int>(currentAd.id),
+              ad: currentAd,
+            ),
+          ),
+        ),
       ),
     );
   }
