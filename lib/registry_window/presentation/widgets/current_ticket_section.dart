@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_constans.dart';
+import '../../core/utils/ticket_category.dart';
 import '../../domain/repositories/appointment_repository.dart';
 import '../../domain/repositories/patient_repository.dart';
 import '../blocs/appointment/appointment_bloc.dart';
@@ -133,7 +134,7 @@ class _CurrentTicketSectionState extends State<CurrentTicketSection> {
   }
 
   Widget _buildActiveTicket(BuildContext context, TicketEntity ticket, bool isActive, bool isAnyLoading, bool isAppointmentButtonEnabled) {
-    final canRegister = isActive && !ticket.isRegistered;
+    final canRegister = isActive && !ticket.isRegistered && ticket.category != TicketCategory.byAppointment;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
